@@ -32,9 +32,9 @@ public class Book extends BaseEntity {
 //    @Version  // This is the version field for optimistic locking
 //    private Long version;
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private User owner;*/
 
     @OneToMany(mappedBy = "book")
     private List<Feedback> feedbacks;

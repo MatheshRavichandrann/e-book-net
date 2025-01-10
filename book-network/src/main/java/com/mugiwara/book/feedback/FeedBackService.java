@@ -30,8 +30,8 @@ public class FeedBackService {
         if (book.isArchived() || !book.isSharable()) {
             throw new OperationNotPermittedException("You cannot give a feedback for a archived or not sharable book");
         }
-        User user = (User) connectedUser.getPrincipal();
-        if (Objects.equals(book.getOwner().getId(), user.getId())) {
+//        User user = (User) connectedUser.getPrincipal();
+        if (Objects.equals(book.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You cannot give a feedback to yours own book");
         }
         Feedback feedback = feedbackMapper.toFeedback(request);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookRequest } from '../../../../services/models';
 import { BookService } from '../../../../services/services';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-book',
@@ -18,7 +19,8 @@ export class ManageBookComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -70,9 +72,11 @@ export class ManageBookComponent implements OnInit {
             }
           }).subscribe({
             next: () => {
+              this.toastService.success('Book infromation has been sucessfully saved', 'Bingo!')
               this.router.navigate(['/books/my-books']);
             },
             error: (err) => {
+              this.toastService.error('An error occurred while uploading the book cover', 'Oops!');
               this.errorMsg = ['An error occurred while uploading the book cover.'];
             }
           });
@@ -82,6 +86,7 @@ export class ManageBookComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.toastService.error('Someting went wrong', 'Oh No!')
         this.errorMsg = err.error.validationErrors || ['An error occurred while saving the book.'];
       }
     });
