@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services';
 import { Router } from '@angular/router';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-list',
@@ -19,8 +18,7 @@ export class BookListComponent implements OnInit{
   level = 'success';
   constructor(
     private bookService: BookService,
-    private router: Router,
-    private toastService: ToastrService
+    private router: Router
   ){ }
 
 
@@ -83,10 +81,13 @@ export class BookListComponent implements OnInit{
       "book-id": book.id as number
     }).subscribe({
       next: () => {
-        this.toastService.success('Book successfully added to your list', 'Yayyy!')
+        this.level = 'success';
+        this.message = 'Book successfully added to your list'
       },
       error: (err) => {
-        this.toastService.error(err.error.error, 'Oops!')
+        console.log(err);
+        this.level = 'error';
+        this.message = err.error.error;
       }
     });
   }
