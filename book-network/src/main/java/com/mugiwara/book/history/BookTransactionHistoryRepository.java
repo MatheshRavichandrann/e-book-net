@@ -15,43 +15,43 @@ public interface BookTransactionHistoryRepository extends JpaRepository<BookTran
     @Query("""
             SELECT history
             FROM BookTransactionHistory history
-            WHERE history.user.id = :userId
+            WHERE history.userId = :userId
             """)
-    Page<BookTransactionHistory> findAllBorrowedBooks(Pageable pageable, @Param("userId") Integer userId);
+    Page<BookTransactionHistory> findAllBorrowedBooks(Pageable pageable, @Param("userId") String userId);
 
     @Query("""
             SELECT history
             FROM BookTransactionHistory history
-            WHERE history.book.owner.id = :userId
+            WHERE history.book.createdBy = :userId
             """)
-    Page<BookTransactionHistory> findAllReturnedBooks(Pageable pageable, @Param("userId") Integer userId);
+    Page<BookTransactionHistory> findAllReturnedBooks(Pageable pageable, @Param("userId") String userId);
 
     @Query("""
             SELECT CASE WHEN COUNT(history) > 0 THEN true ELSE false END
             FROM BookTransactionHistory history
-            WHERE history.user.id = :userId
+            WHERE history.userId = :userId
             AND history.book.id = :bookId
             AND history.returnApproved = false
             """)
-    boolean isAlreadyBorrowedByUser(@Param("bookId") Integer bookId, @Param("userId") Integer userId);
+    boolean isAlreadyBorrowedByUser(@Param("bookId") Integer bookId, @Param("userId") String userId);
 
     @Query("""
             SELECT transaction
             FROM BookTransactionHistory transaction
-            WHERE transaction.user.id = :userId
+            WHERE transaction.userId = :userId
             AND transaction.book.id = :bookId
             AND transaction.returned = false
             AND transaction.returnApproved = false
             """)
-    Optional<BookTransactionHistory> findByBookIdAndUserId(@Param("bookId") Integer bookId, @Param("userId") Integer userId);
+    Optional<BookTransactionHistory> findByBookIdAndUserId(@Param("bookId") Integer bookId, @Param("userId") String userId);
 
     @Query("""
             SELECT transaction
             FROM BookTransactionHistory transaction
-            WHERE transaction.book.owner.id = :userId
+            WHERE transaction.book.createdBy = :userId
             AND transaction.book.id = :bookId
             AND transaction.returned = true
             AND transaction.returnApproved = false
             """)
-    Optional<BookTransactionHistory> findByBookIdAndOwnerId(@Param("bookId") Integer bookId, @Param("userId") Integer userId);
+    Optional<BookTransactionHistory> findByBookIdAndOwnerId(@Param("bookId") Integer bookId, @Param("userId") String userId);
 }

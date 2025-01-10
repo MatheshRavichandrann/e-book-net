@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
@@ -10,6 +9,12 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
 import {CodeInputModule} from 'angular-code-input';
 import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
+import { KeycloakService } from './services/keycloak/keycloak.service';
+import { ToastrModule } from 'ngx-toastr';
+
+export function kcFactory(kcService: KeycloakService){
+  return () => kcService.init();
+}
 
 @NgModule({
   declarations: [
@@ -23,13 +28,27 @@ import { HttpTokenInterceptor } from './services/interceptor/http-token.intercep
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CodeInputModule
+    CodeInputModule,
+    ToastrModule.forRoot({
+      progressBar: true,
+      closeButton: true,
+      newestOnTop: true,
+      tapToDismiss: true,
+      positionClass: 'toast-top-right',
+      timeOut: 8000
+    })
   ],
   providers: [
     HttpClient,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakService],
+      useFactory: kcFactory,
       multi: true
     }
   ],
