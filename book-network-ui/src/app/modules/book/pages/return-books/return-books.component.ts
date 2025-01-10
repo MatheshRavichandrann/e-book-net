@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookResponse, BorrowedBookResponse, FeedbackRequest, PageResponseBorrowedBookResponse } from '../../../../services/models';
 import { BookService, FeedbackService } from '../../../../services/services';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-return-books',
@@ -19,8 +18,7 @@ export class ReturnBooksComponent implements OnInit{
     returnedBooks: PageResponseBorrowedBookResponse = {};
 
     constructor(
-      private bookService: BookService,
-      private toastService: ToastrService
+      private bookService: BookService
     ){}
   
     ngOnInit(): void {
@@ -78,13 +76,15 @@ export class ReturnBooksComponent implements OnInit{
 
     approveBookReturn(book: BorrowedBookResponse){
       if (!book.returned) {
-        this.toastService.error('The book is not yet return', 'Oops!');
+        this.level = 'error',
+        this.message = 'The book is not yet return'
       }
       this.bookService.approveReturnBorrowBook({
         'book-id': book.id as number
       }).subscribe({
         next: () => {
-          this.toastService.success('Book return approved', 'Yayy!')
+          this.level = 'success';
+          this.message = 'Book return approved';
           this.findAllReturnedBooks();
         }
       });

@@ -13,6 +13,7 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   mail:
     host: smtp.gmail.com
     port: 465
@@ -31,12 +32,17 @@ spring:
     #      timeout: 3000
     #      writetimeout: 5000
     protocol: smtp
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: "http://localhost:9090/realms/e-books"
+
 application:
+  security:
+    jwt:
+      secret-key: 3D77C395F14D4230A75FE34BA2BC6A66E6984516C039D21CBDA6JEEVASOROHINIM6BC6D22CDAB44
+      expiration: 86400000
+      refresh-token:
+        604800000
+  mailing:
+    frontend:
+      activation_url: http://localhost:4200/activate-account
   file:
     upload:
       photos-output-path: ./uploads
