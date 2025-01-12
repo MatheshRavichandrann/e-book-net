@@ -23,11 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 
 //@Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class AuthenticationService {
 
-    /*private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+//private final RoleRepository roleRepository;
+    /*private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
@@ -125,4 +125,5 @@ public class AuthenticationService {
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
     }*/
+
 }

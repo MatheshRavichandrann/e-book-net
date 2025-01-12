@@ -35,23 +35,30 @@
         </li>
       </ul>
       <form class="d-flex gap-2 align-items-center" role="search">
-        <input class="form-control" type="text" placeholder="Find a book" aria-label="search" />
-        <button class="btn btn-outline-success" type="submit">
-          <i class="fas fa-search"></i>
-        </button>
+        <div class="dropdown cursor-pointer" (click)="unreadNotificationCounts = 0">
+          <i class="fas fa-bell position-relative h4" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" *ngIf="unreadNotificationCounts > 0">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </i>
+          <ul class="dropdown-menu">
+            <li *ngFor="let notification of notifications">
+              <span class="dropdown-item cursor-pointer border-bottom">
+                <i class="fas fa-bell"></i>&nbsp; {{notification.bookTitle}} : {{notification.message}}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <input class="form-control" type="search" placeholder="Find a book" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+        <!-- <span>Welcome</span>
+        <span class="text-capitalize fw-bold">{{username}}</span>
+        <button class="btn btn-link" type="submit" (click)="logout()"><i class="fas fa-door-open"></i></button> -->
       </form>
-      <!-- <i class="fas fa-user-circle fa-2x ms-3"></i> -->
-      <!-- <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center ms-3"
-        style="width: 40px; height: 40px; font-weight: bold;">
-        {{ username.charAt(0).toUpperCase() }}
-      </div> -->
       <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center ms-3" style="width: 30px; height: 30px; font-weight: bold; font-size: 15px;">
         {{ username?.charAt(0)?.toUpperCase() }}
       </div>
-      
-      
-      
-      <span class="text-capitalize fw-bold ms-1">{{ username}}</span>
+      <span class="text-capitalize fw-bold ms-1">{{ username }}</span>
       <button class="btn btn-link ms-2" type="button" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
       </button>
