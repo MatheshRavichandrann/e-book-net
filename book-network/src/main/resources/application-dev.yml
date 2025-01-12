@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-cu1q9hrtq21c73bk9r7g-a.oregon-postgres.render.com:5432/ebook_86j1
-    username: zoro
-    password: R49F0vgaUz9X9VSuoYBlPW3BYyTtRLGv
+    url: jdbc:postgresql://localhost:5432/e-book
+    username: postgres
+    password: papps
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -16,8 +16,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 465
-    username: ${MAIL_USERNAME}  # Use environment variables for sensitive data
-    password: ${MAIL_PASSWORD}  # Use environment variables for sensitive data
+    username: adithya7887@gmail.com
+    password: pqmfwohnluglhysr
     properties:
       mail:
         smtp:
@@ -27,16 +27,19 @@ spring:
             trust: "*"
         starttls:
           enable: true
+    #      connectiontimeout: 5000
+    #      timeout: 3000
+    #      writetimeout: 5000
     protocol: smtp
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: "https://keycloak-bsn.onrender.com/realms/e-books"  # Update to Render's Keycloak instance
+          issuer-uri: "http://localhost:9090/realms/e-books"
 application:
   file:
     upload:
-      photos-output-path: /app/uploads  # Update file path for Render
+      photos-output-path: ./uploads
 
 server:
   port: 8088
