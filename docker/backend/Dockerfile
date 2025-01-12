@@ -31,6 +31,7 @@ EXPOSE 8088
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
 ENV DB_HOST=dpg-cu1q9hrtq21c73bk9r7g-a.oregon-postgres.render.com
+ENV DB_URL=postgresql://zoro:R49F0vgaUz9X9VSuoYBlPW3BYyTtRLGv@dpg-cu1q9hrtq21c73bk9r7g-a.oregon-postgres.render.com/ebook_86j1
 ENV DB_PORT=5432
 ENV DB_NAME=ebook_86j1
 ENV DB_USERNAME=zoro
