@@ -1,65 +1,24 @@
-services:
-  postgres:
-    container_name: postgres-sql-bsn
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: papps
-      PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: e-book
-    volumes:
-      - postgres:/data/postgres
-    ports:
-      - 5432:5432
-    networks:
-      - spring-demo  # Changed to a list
-    restart: unless-stopped
+spring:
+  datasource:
+    url: ${DATABASE_URL}  # Render will inject the DATABASE_URL
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: ${MAILDEV_HOST}  # Configure mail provider if needed
+    port: 1025
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
 
-  mail-dev:
-    container_name: mail-dev
-    image: maildev/maildev
-    ports:
-      - 1080:1080
-      - 1025:1025
-    networks:
-      - spring-demo
-  keycloak:
-    container_name: keycloak-bsn
-    image: quay.io/keycloak/keycloak:24.0.2
-    ports:
-      - 9090:8080
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    command:
-      - "start-dev"
-
-    networks:
-      - spring-demo
-
-#  bsn-api:
-#    container_name: bsn-api
-#    image: bsn/bsn:1.0.0
-#    ports:
-#      - 8088:8088
-#    networks:
-#      - spring-demo
-#    depends_on:
-#      - postgres
-#  bsn-ui:
-#    container_name: bsn-ui
-#    image: bsn/bsn-ui:1.0.0
-#    ports:
-#      - 8080:80
-#    networks:
-#      - spring-demo
-#    depends_on:
-#      - bsn-api
-
-networks:
-  spring-demo:
-    driver: bridge
-
-volumes:
-  postgres:
-    driver: local
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            scope: openid, profile, email
+            provider: keycloak
