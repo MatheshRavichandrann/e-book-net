@@ -1,26 +1,35 @@
-# Use the official Maven image to build the application with Java 17
-FROM maven:3.8.4-openjdk-17-slim AS build
+# Build stage
+FROM maven:3.9.4-eclipse-temurin-21 AS build
+WORKDIR /build
 
-# Set the working directory for the build process
-WORKDIR /Taskitory
+# Copy pom.xml from book-network
+COPY book-network/pom.xml .
 
-# Copy the pom.xml and source code to the working directory
-COPY pom.xml .
-COPY src ./src
+# Download dependencies
+RUN mvn -B dependency:go-offline
 
-# Package the application and skip tests
-RUN mvn clean package -DskipTests=true
+# Copy the entire source code
+COPY book-network/src ./src
 
-# Use a different OpenJDK image to run the application with Java 17
-FROM openjdk:17-slim
+# Build the application
+RUN mvn -B clean package -DskipTests
 
-# Set the working directory for the runtime container
+# Runtime stage
+FROM amazoncorretto:21
+ARG PROFILE=dev
+ARG APP_VERSION=1.0.0
+
 WORKDIR /app
 
-# Copy the jar file from the build stage
-COPY --from=build /Taskitory/target/*.jar app.jar
+# Copy the packaged JAR from the build stage
+COPY --from=build /build/target/book-network-*.jar /app/
 
-# Set environment variables for the database connection and Spring configuration
+# Expose application port
+EXPOSE 8088
+
+# Set environment variables
+ENV ACTIVE_PROFILE=${PROFILE}
+ENV JAR_VERSION=${APP_VERSION}
 ENV DB_HOST=dpg-cu1q9hrtq21c73bk9r7g-a.oregon-postgres.render.com
 ENV DB_PORT=5432
 ENV DB_NAME=ebook_86j1
@@ -34,8 +43,5 @@ ENV SPRING_JPA_HIBERNATE_DDL-AUTO=update
 ENV SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
 ENV SPRING_APPLICATION_NAME=DVD-Library
 
-# Expose the application port
-EXPOSE 8080
-
-# Set the command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the application
+CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} book-network-${JAR_VERSION}.jar
