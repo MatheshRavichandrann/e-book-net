@@ -28,7 +28,9 @@ COPY --from=build /build/target/book-network-*.jar /app/
 EXPOSE 8088
 
 # Set environment variables
-ENV DB_URL=jdbc:postgresql://postgres-sql-bsn:5432/e-book
+ENV DB_URL=jdbc:postgresql://dpg-cu1q9hrtq21c73bk9r7g-a:5432/ebook_86j1
+ENV DB_USERNAME=zoro
+ENV DB_PASSWORD=R49F0vgaUz9X9VSuoYBlPW3BYyTtRLGv
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
 
