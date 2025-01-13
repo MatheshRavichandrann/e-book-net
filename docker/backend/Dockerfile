@@ -31,8 +31,8 @@ EXPOSE 8088
 ENV DB_URL=jdbc:postgresql://dpg-cu1q9hrtq21c73bk9r7g-a:5432/ebook_86j1
 ENV DB_USERNAME=zoro
 ENV DB_PASSWORD=R49F0vgaUz9X9VSuoYBlPW3BYyTtRLGv
-ENV ACTIVE_PROFILE=${PROFILE}
-ENV JAR_VERSION=${APP_VERSION}
+ENV ACTIVE_PROFILE=dev
+ENV JAR_VERSION=1.0.0
 
 # Run the application
 CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} book-network-${JAR_VERSION}.jar
