@@ -22,7 +22,7 @@ ARG APP_VERSION=1.0.0
 WORKDIR /app
 
 # Copy the packaged JAR from the build stage
-COPY --from=build /build/target/book-network-*.jar /app/
+COPY --from=build /build/target/book-network-${APP_VERSION}.jar /app/book-network.jar
 
 # Expose application port
 EXPOSE 8088
@@ -32,7 +32,6 @@ ENV DB_URL=jdbc:postgresql://dpg-cu1q9hrtq21c73bk9r7g-a.oregon-postgres.render.c
 ENV DB_USERNAME=zoro
 ENV DB_PASSWORD=R49F0vgaUz9X9VSuoYBlPW3BYyTtRLGv
 ENV ACTIVE_PROFILE=dev
-ENV JAR_VERSION=1.0.0
 
 # Run the application
-CMD ["java", "-jar", "-Dspring.profiles.active=${ACTIVE_PROFILE}", "-Dspring.datasource.url=${DB_URL}", "book-network-${JAR_VERSION}.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=${ACTIVE_PROFILE}", "-Dspring.datasource.url=${DB_URL}", "/app/book-network.jar"]
