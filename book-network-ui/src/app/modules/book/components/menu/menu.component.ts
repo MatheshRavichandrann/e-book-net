@@ -30,7 +30,7 @@ export class MenuComponent implements OnInit {
     this.navigationHandler();
 
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
-      let ws = new SockJS('http://localhost:8088/api/v1/ws');
+      let ws = new SockJS('http://localhost:8088/api/v1/');
       this.socketClient = Stompk.over(ws);  
       this.socketClient.connect(
         { 'Authorization:': 'Bearer ' + this.keycloakService.keycloak.token },  
