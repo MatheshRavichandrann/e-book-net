@@ -58,7 +58,7 @@ public class BeansConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8080", "https://e-bookapi.onrender.com"));
+        config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8080", "https://e-bookapi.onrender.com", "https://8888-2409-4072-6e9e-9971-606c-89f4-5bf2-e17f.ngrok-free.app"));
         config.setAllowedHeaders(Arrays.asList(
                 ORIGIN,
                 CONTENT_TYPE,
