@@ -20,7 +20,7 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private keycloakService: KeycloakService,
-    private toastService: ToastrService 
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -30,19 +30,19 @@ export class MenuComponent implements OnInit {
     this.navigationHandler();
 
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
-      let ws = new SockJS('http://localhost:8088/api/v1/');
-      this.socketClient = Stompk.over(ws);  
+      let ws = new SockJS('http://:8088/api/v1/');
+      this.socketClient = Stompk.over(ws);
       this.socketClient.connect(
-        { 'Authorization:': 'Bearer ' + this.keycloakService.keycloak.token },  
+        { 'Authorization:': 'Bearer ' + this.keycloakService.keycloak.token },
         () => {
           this.notificationSubscription = this.socketClient.subscribe(
             `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`,
             (message: any) => {
               const notification: Notification = JSON.parse(message.body);
               if (notification) {
-                this.notifications.unshift(notification); 
+                this.notifications.unshift(notification);
                 switch(notification.status){
-                  case 'BORROWED': 
+                  case 'BORROWED':
                     this.toastService.info(notification.message, notification.bookTitle);
                     break;
                   case 'RETURNED':
