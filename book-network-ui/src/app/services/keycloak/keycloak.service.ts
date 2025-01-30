@@ -14,7 +14,12 @@ export class KeycloakService {
   get keycloak() {
     if (!this._keycloak) {
       this._keycloak = new Keycloak({
-        url: 'http://localhost:9090',
+        url: 'this._keycloak = new Keycloak({
+  url: 'https://8888-2409-4072-6e9e-9971-606c-89f4-5bf2-e17f.ngrok-free.app',
+  realm: 'e-books',
+  clientId: 'bsn'
+});
+',
         realm: 'e-books',
         clientId: 'bsn'
       });
@@ -34,11 +39,11 @@ export class KeycloakService {
     const authenticated = await this.keycloak.init({
       onLoad: 'login-required'
     });
-    
+
     if (authenticated) {
       this._profile = (await this.keycloak?.loadUserProfile()) as UserProfile;
       this._profile.token = this.keycloak?.token;
-    } 
+    }
     return authenticated;
   }
 
@@ -46,7 +51,7 @@ export class KeycloakService {
   login(){
     return this.keycloak?.login();
   }
-   
+
   logout(){
     return this.keycloak?.logout({redirectUri: 'http://localhost:4200'});
    }
