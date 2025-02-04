@@ -17,5 +17,6 @@ RUN /opt/keycloak/bin/kc.sh build
 # Expose the default Keycloak port
 EXPOSE 8080
 
+
 # Start the Keycloak server
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
