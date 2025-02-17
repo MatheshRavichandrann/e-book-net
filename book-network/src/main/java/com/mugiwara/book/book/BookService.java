@@ -49,7 +49,6 @@ public class BookService {
     }
 
     public PageResponse<BookResponse> findAllBooks(int page, int size, Authentication connectedUser) {
-//        User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<Book> books = bookRepository.findAllDisplayableBook(pageable, connectedUser.getName());
         List<BookResponse> bookResponses = books.stream()
@@ -85,7 +84,6 @@ public class BookService {
     }
 
     public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
-//        User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<BookTransactionHistory> allBorrowedBooks = transactionHistoryRepository.findAllBorrowedBooks(pageable, connectedUser.getName());
         List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
@@ -137,7 +135,6 @@ public class BookService {
     public Integer updateArchivedStatus(Integer bookId, Authentication connectedUser) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("No book found with the ID: " + bookId));
-//        User user = (User) connectedUser.getPrincipal();
         if (!Objects.equals(book.getCreatedBy(), connectedUser.getName())) { // book.getOwner().getBooks()
             throw new OperationNotPermittedException("You cannot update others books archived status");
         }
@@ -154,7 +151,6 @@ public class BookService {
         if (book.isArchived() || !book.isSharable()) {
             throw new OperationNotPermittedException("The Requested book cannot be borrowed since, it is archived or not sharable");
         }
-//        User user = (User) connectedUser.getPrincipal();
         if (Objects.equals(book.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You cannot borrow yours own book");
         }
@@ -187,7 +183,6 @@ public class BookService {
         if (book.isArchived() || !book.isSharable()) {
             throw new OperationNotPermittedException("The Requested book cannot be borrowed since, it is archived or not sharable");
         }
-//        User user = (User) connectedUser.getPrincipal();
         if (Objects.equals(book.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You cannot borrow or return yours own book");
         }
@@ -212,7 +207,6 @@ public class BookService {
         if (book.isArchived() || !book.isSharable()) {
             throw new OperationNotPermittedException("The Requested book cannot be borrowed since, it is archived or not sharable");
         }
-//        User user = (User) connectedUser.getPrincipal();
         if (!Objects.equals(book.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You cannot return a book that you do not own");
         }
@@ -234,7 +228,6 @@ public class BookService {
     public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("No book found with the ID: " + bookId));
-//        User user = (User) connectedUser.getPrincipal();
         var bookCover = fileStorageService.saveFile(file, connectedUser.getName());
         book.setBookCover(bookCover);
         bookRepository.save(book);
