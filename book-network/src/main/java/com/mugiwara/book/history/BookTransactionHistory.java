@@ -2,7 +2,6 @@ package com.mugiwara.book.history;
 
 import com.mugiwara.book.book.Book;
 import com.mugiwara.book.common.BaseEntity;
-import com.mugiwara.book.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -21,9 +20,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class BookTransactionHistory extends BaseEntity {
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
     @Column(name = "user_id")
     private String userId;
     @ManyToOne
